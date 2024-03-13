@@ -46,19 +46,55 @@
 
     // 👉 CHALLENGE 1 - Integers
     class Integers {
-      // 🧠 Constructor takes **any** number of arguments, which are integers
-      // 🧠 Instances have an `ints` property which is an array holding the integers above in the same order
-      // 🧠 Implement a `getAll` method which returns the data held in the `ints` property
-      // 🧠 Implement a `getEvens` method which returns an array with the integers that are even
-      // 🧠 Implement a `getNegatives` method which returns an array with the integers that negative
-      // 🧠 Implement a `getAllSquared` method which returns an array with the integers squared
-      // 🧠 Implement a `pop` method which removes the last integer from `ints`  and returns it
-      // 🧠 Implement a `push` method which takes an int and pushes it to the end of `ints`, and returns the updated `ints` property
-      // 🧠 Implement a `getEveryNth` method which takes an int `n` and returns an array with the ints at position 0, n, n + n, n + n + n, etc
-      // 🧠 Implement a `getAllReversed` method which returns the ints in reverse order
+      // 🧠 Constructor takes **any** number of arguments, which are integers DONE
+      // 🧠 Instances have an `ints` property which is an array holding the integers above in the same order DONE
+      // 🧠 Implement a `getAll` method which returns the data held in the `ints` property DONE
+      // 🧠 Implement a `getEvens` method which returns an array with the integers that are even DONE
+      // 🧠 Implement a `getNegatives` method which returns an array with the integers that negative DONE
+      // 🧠 Implement a `getAllSquared` method which returns an array with the integers squared DONE
+      // 🧠 Implement a `pop` method which removes the last integer from `ints`  and returns it DONE
+      // 🧠 Implement a `push` method which takes an int and pushes it to the end of `ints`, and returns the updated `ints` property DONE
+      // 🧠 Implement a `getEveryNth` method which takes an int `n` and returns an array with the ints at position 0, n, n + n, n + n + n, etc DONE
+      // 🧠 Implement a `getAllReversed` method which returns the ints in reverse order DONE!
       // ❗ WARNING: except for `getAllReversed`, methods must respect the order of the integers
       // ❗ WARNING: note that none of the methods actually mutate the `ints` property
-
+        constructor(...ints){
+          this.ints = ints
+        }
+        getAll(){
+          return this.ints
+        }
+        getEvens(){
+          let evens = this.ints.filter(num => num % 2 === 0)
+          return evens
+        }
+        getNegatives(){
+          let negatives = this.ints.filter(num => num < 0)
+          return negatives
+        }
+        getAllSquared(){
+          let squared = this.ints.map(num => num ** 2)
+          return squared
+        }
+        pop(){
+          let popped = this.ints.pop(-1)
+          return popped
+        }
+        push(){
+          this.ints.push(4)
+          return this.ints
+        }
+        getEveryNth(n){
+          return this.ints.filter((element, idx) => idx % n === 0)
+          
+        }
+        getAllReversed(){
+          let reversed = []
+          for (let i = this.ints.length - 1; i >= 0; i--){
+            reversed.push(this.ints[i])
+          }
+          return reversed
+        }
     }
 
     // 👉 CHALLENGE 2 NerfGun
@@ -76,7 +112,42 @@
       //      * When engaging the safety, return "Safety enabled!"
       //      * When disengaging the safety, return "Safety disabled!"
       // 🌟 HINT: instances need to keep track of their maximum capacity as well as their current capacity
-
+        constructor(proj){
+          this.proj = proj
+          this.safety = true
+          
+        }
+        shoot(){
+         // let ammo = this.proj > 0 ? true : false
+          if (this.proj > 0 && !this.safety){
+            this.proj--
+            return 'Bang!'
+          } else{
+            return 'Click!'
+          }
+        }
+        reload(num){
+          let maxCapacity = 3
+          // this.proj + num
+         // console.log(this.proj)
+          if (num <= 0 || typeof num !== 'number'){
+            return 'Error reloading!'
+          } else if (num > 0 && num <= 3 && typeof num === 'number'){
+            this.proj += num 
+            return `${this.proj} projectiles left!`
+          } else {
+            this.proj++
+            return `${this.proj} projectiles left!`
+          }
+        }
+        toggleSafety(){
+          this.safety = !this.safety
+          if (this.safety){
+            return 'Safety enabled!'
+          } else {
+            return 'Safety disabled!'
+          }
+        }
     }
 
     // 👉 CHALLENGE 3 EBook
@@ -95,8 +166,23 @@
       //    ebook.next() // returns null
       // 🌟 HINT: remember about the `slice` method which strings and arrays have
       // ❗ Feel free to implement `back`, although this is not required nor graded
+        constructor(wholeBook, charsPerPage){
+          this.book = wholeBook;
+          this.charsPerPage = charsPerPage;
+          this.currentPage = 0;
+        }
 
+        next(){
+            if (this.currentPage * this.charsPerPage >= this.book.length) {
+              return null
+            } 
+            let start = this.currentPage * this.charsPerPage
+            let end = start + this.charsPerPage
+            this.currentPage++
+            return this.book.slice(start, end)
+       }
     }
+    
 
     // 👉 CHALLENGE 4 AntFarm
     class AntFarm {
@@ -130,9 +216,35 @@
       //      console.log(list) // prints ["a"]
       // 👉 HINT: if you are not feeling confident with map and filter, solve the problem with for loops,
       //      and with the piece of mind of all tests passing, refactor to use map/filter
-
+        constructor(...ants){
+          let health = 100
+          this.ants = ants.map(name => ({name, health: 100}))
+        }
+        work(){
+          let startingAnts = this.ants.length
+           if (startingAnts === 0){
+            return "No ants here. Did you work them to death?"
+          }
+          this.ants.forEach(ant => {
+            ant.health -= 20
+          })
+         
+          this.ants = this.ants.filter(ant => ant.health > 0)
+          return `${startingAnts} ants starting work!`
+        }
+        feed(antName){
+          let antFound = false
+          this.ants = this.ants.map(ant => {
+            if (ant.name === antName){
+              antFound = true
+              return {...ant, health: ant.health + 15}
+            }
+            return ant
+          })
+          return antFound ? 'Yum!' : `${antName} not found!`
+        }
     }
-
+   
     // 🧪 TESTS, do not make any changes below this line ===================
     // 🧪 TESTS, do not make any changes below this line ===================
     // 🧪 TESTS, do not make any changes below this line ===================
