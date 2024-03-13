@@ -80,8 +80,9 @@
           let popped = this.ints.pop(-1)
           return popped
         }
-        push(){
-          this.ints.push(4)
+        push(int){
+          
+          this.ints.push(int)
           return this.ints
         }
         getEveryNth(n){
